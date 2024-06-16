@@ -1,0 +1,198 @@
+#include <stdio.h>
+#include <math.h>
+int yd(int*arr,int c,int in);
+int yfa(int*x1,int*y2pt[],int c,int in);
+int displa(int*x1,int*Y2P[],int* EP[],int*YD[],int c,int in );
+
+
+
+int main(){
+   int in;
+   printf("enter in the number of input \n");
+   scanf("%d",&in);//prompting the user to enter in the number of inputs for the an logic circuit
+   int c = pow(in,2);//using the power function to square the input by 2
+   int arrx1[c][in];//nitialize a 2 dimensional array to enter in the values of x1 and x2
+   
+   printf("enter in the values for the %d input logic circuit\n",in);
+    for (int i=0;i<c;i++){
+        for(int j=0;j<2;j++){
+            scanf("%d",&arrx1[i][j]);
+        }
+
+    }
+    //printf("x1\tx2");
+   // for (int i=0;i<c;i++){ FOR FIRST PRINTING THE 2D ARRAY OF X1 AND X2
+       // printf("\n");
+       // for(int j=0;j<2;j++){
+          //  printf("%d\t",arrx1[i][j]);
+       // }
+
+   // }
+    int*ptr[c][in];
+    for (int i=0;i<c;i++){
+        for(int j=0;j<2;j++){
+            ptr[i][j]=&arrx1[i][j];
+        }
+    }
+
+       yd(&arrx1[0][0],c,in);//calling the function for the initial responds
+             
+return 0;
+} 
+//function to do the AND of the truth table
+int yd(int*arr,int c,int in){
+    int newarr[c][in];
+    for(int i=0;i<c;i++){
+        for (int j=0;j<2;j++){
+            //newarr[i][j]=arr[i][j];
+
+        }   
+    }
+    for (int i = 0; i < c; i++) {
+        for (int j = 0; j < in; j++) {
+            // Access each element using pointer arithmetic
+            newarr[i][j]= *(arr + i * in + j); //putting the pointer to the new viarable
+        }
+    }
+        
+    
+        
+    int y2[c]; //new variable to store the answer of y2(p) the AND
+    for (int i=0,k=0;i<c;i++){
+            if(newarr[i][0] && newarr[i][1] ==1){
+                y2[k]=1;
+            }
+            else{
+                y2[k]=0;
+            }
+            k++;}
+            //printf("\ny2(p)\n");
+            //for(int i=0;i<c;i++){
+                //printf("%d\n",y2[i]);
+           // }
+            int* y2ptr[c]; //NEW POINTER FOR THE AND ARRAY
+            for(int i=0;i<c;i++){
+                y2ptr[i]=&y2[i];//PUTTING THE ADDRESS OF THE AND ARRAY TO THE POINTER
+            }
+            //int* newarr2[c][in];
+           // for(int i=0;i<c;i++){
+              //  for(int j=0;j<2;j++){
+               // newarr2[i][j]=&newarr[i][j];
+           // }
+            //}
+
+           
+    
+
+             
+            yfa(&newarr[0][0],y2ptr,c,in); //calling the function for the y(D) function
+            return 0;
+        }//ending of function
+    //if(x1==1&&x2==1){
+      //  return 1;}
+    //else {
+        //return 0;
+   // }
+    
+//}
+int yfa(int*x1,int*y2pt[],int c,int in){
+    int i=1;
+    float b,x,y;
+    b=0.2;//bias
+    int nx1[c][in];//array for the inputs x1 and x2
+    //float nw1[in];//array for the w1 and w2
+    for (int i=0;i<c;i++){
+        for(int j=0;j<in;j++){
+            nx1[i][j]=*(x1 + i * in + j);//putting the array to nx1
+        }
+    }
+        
+        float w1,w2;//initializing the  two virables w1 and w2
+        int newy2[i];//array for AND OF LOGIC INPUTS
+        for(int i=0;i<c;i++){
+            newy2[i]=*y2pt[i];//putting the AND TO the virable
+        }
+        int yd[c];//array for the Y(D) FUNCTION
+    
+printf("enter in the value of w1 and w2\n");
+scanf("%f%f",&w1,&w2);
+    //FOR STATEMENT TO DO ALL THE FUNCTION CALCULATTION
+    for(int i=0;i<c;i++){
+        if ((nx1[i][0]*w1+nx1[i][1]*w2-0.2<0)){
+            yd[i]=0;
+        }
+        else {
+            yd[i]=1;
+        }
+        
+    
+    w1=(w1+nx1[i][0]*newy2[i]-yd[i]*0.1);
+    w2=(w2+nx1[i][1]*newy2[i]-yd[i]*0.1);}
+    //printf("y(D)\n");
+    //for(int i=0;i<c;i++){ FUNCTION TO PRINT Y(D)
+        //printf("%d\n",yd[i]);
+    //}
+    int ep[c];//VARIABLE FOR ERROR
+    //FUNCTION TO CALCULATE THE ERROR
+    for(int i=0;i<c;i++){
+        ep[i]=(newy2[i]-yd[i]);
+    }
+    //printf("E(P)\n");
+    //for(int i=0;i<c;i++){ FUNCTION TO PRINT THE ERROR
+       // printf("%d\n",ep[i]);
+   // }
+    //while(i<=4){
+        //x=x1*w1;
+        //i+=1;
+    //}
+    int *yd2[c];
+    int *ep2[c];
+    for(int i=0;i<c;i++){
+        ep2[i]=&ep[i];
+    }
+    for(int i=0;i<c;i++){
+        yd2[i]=&yd[i];
+    }
+displa(&nx1[0][0],y2pt,ep2,yd2,c,in);
+    y=x-b;
+    if(y<=0){
+    return 0;}
+    else{
+        return 1;
+    }
+}
+
+//FUNTION TO PRINT THE WHOLE TABLE
+int displa(int*x1,int*Y2P[],int* EP[],int*YD[],int c,int in ){
+    int x1x2[c][in];
+    int y2P[c];
+    int eP[c];
+    int yD[c];
+    for(int i=0;i<c;i++){
+        for(int j=0;j<in;j++){
+            x1x2[i][j]=*(x1 + i * in + j);
+        }
+    }
+    for(int i=0;i<c;i++){
+        y2P[i]=*Y2P[i];
+    }
+     for(int i=0;i<c;i++){
+        eP[i]=*EP[i];
+    }
+     for(int i=0;i<c;i++){
+        yD[i]=*YD[i];
+    }
+    printf("x1\t\tx2\t\tY2(P)\t\tY(D)\t\tE(P)");
+    for(int i=0;i<c;i++){
+        printf("\n\n");
+        for(int j=0;j<in;j++){
+            printf("%d\t\t",*(x1 + i * in + j));
+            
+        }
+        printf("%d\t\t%d\t\t%d\n",y2P[i],yD[i],eP[i]);
+        
+        
+        }
+        
+        
+    }
